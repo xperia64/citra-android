@@ -355,6 +355,5 @@ public:
     std::unique_ptr<TextureDownloaderES> texture_downloader_es;
 };
 
-void AllocateSurfaceTexture(GLuint texture, const FormatTuple& format_tuple, u32 width,
-                            u32 height);
+void AllocateSurfaceTexture(GLuint texture, const FormatTuple& format_tuple, u32 width, u32 height);
 } // namespace OpenGL
