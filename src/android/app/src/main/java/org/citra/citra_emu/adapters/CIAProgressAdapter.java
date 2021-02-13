@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.citra.citra_emu.NativeLibrary;
@@ -19,12 +20,19 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CIAProgressAdapter extends RecyclerView.Adapter<CIAProgressViewHolder> implements NativeLibrary.CIAInstallationCallback {
-
+    // Ordinal of enum used as index into ciaStateText
     private enum CIAState {
         INSTALLING,
         SUCCESS,
         FAILURE
     }
+
+    private final @StringRes
+    int[] ciaStateText = new int[] {
+            R.string.cia_install_state_installing,
+            R.string.cia_install_state_success,
+            R.string.cia_install_state_failed
+    };
 
     public interface CompletionCallback {
         void notifyInstallationComplete();
@@ -33,7 +41,6 @@ public class CIAProgressAdapter extends RecyclerView.Adapter<CIAProgressViewHold
     private final String[] ciaFileNames;
     private final long[] ciaProgress;
     private final long[] ciaSize;
-    private final long[] ciaDivisor;
     private final CIAState[] ciaState;
 
     private final AtomicInteger numComplete = new AtomicInteger(0);;
@@ -52,9 +59,6 @@ public class CIAProgressAdapter extends RecyclerView.Adapter<CIAProgressViewHold
         this.ciaSize = new long[ciaFileNames.length];
         // Set the default size to 1 so the progress bar isn't filled by default
         Arrays.fill(this.ciaSize, 1);
-        this.ciaDivisor = new long[ciaFileNames.length];
-        // Set the default size to 1 so the progress bar isn't filled by default
-        Arrays.fill(this.ciaDivisor, 1);
         this.ciaState = new CIAState[ciaFileNames.length];
         Arrays.fill(this.ciaState, CIAState.INSTALLING);
     }
@@ -75,6 +79,7 @@ public class CIAProgressAdapter extends RecyclerView.Adapter<CIAProgressViewHold
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         holder.textFileName.setText(ciaFileNames[position]);
+        holder.textInstallState.setText(ciaStateText[ciaState[position].ordinal()]);
         holder.progressInstallation.setProgress((int)(1000L*ciaProgress[position]/ciaSize[position]));
         holder.progressInstallation.setMax(1000);
     }

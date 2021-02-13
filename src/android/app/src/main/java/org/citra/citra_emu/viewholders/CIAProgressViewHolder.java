@@ -12,6 +12,7 @@ import org.citra.citra_emu.R;
 public class CIAProgressViewHolder extends RecyclerView.ViewHolder {
     private View itemView;
     public TextView textFileName;
+    public TextView textInstallState;
     public ProgressBar progressInstallation;
 
     public CIAProgressViewHolder(View itemView) {
@@ -20,6 +21,7 @@ public class CIAProgressViewHolder extends RecyclerView.ViewHolder {
         this.itemView = itemView;
         itemView.setTag(this);
         textFileName = itemView.findViewById(R.id.text_filename);
+        textInstallState = itemView.findViewById(R.id.text_install_state);
         progressInstallation = itemView.findViewById(R.id.progress_installation);
     }
 
